@@ -1,0 +1,51 @@
+@startuml
+class Simulation {
+    + List<Car> cars
+    + List<TrafficLight> trafficLights
+    + int currentTime
+
+    + start()
+    + addCar(Car car)
+    + addTrafficLight(TrafficLight trafficLight)
+    + getCurrentTime()
+}
+
+class Car {
+    + int currentPosition
+    + int speed
+    + Intersection destinationIntersection
+
+    + updatePosition()
+    + hasReachedDestination()
+}
+
+class TrafficLight {
+    + TrafficLightState state
+    + int scheduledTimeToChangeState
+
+    + updateState()
+    + isSafeForCarsToPass()
+}
+
+class SimulationGUI {
+    + updateDisplay()
+}
+
+class SimulationController {
+    + Simulation simulation
+    + SimulationGUI simulationGUI
+
+    + start()
+    + pause()
+    + stop()
+    + continue()
+    + addCar()
+    + addTrafficLight()
+}
+
+Simulation <-- SimulationGUI
+Simulation <-- SimulationController
+
+Simulation -- Car
+Simulation -- TrafficLight
+@enduml
