@@ -3,13 +3,17 @@
  */
 package cmsc335_final_project;
 
-import cmsc335_final_project.panels.CarPanel;
-import cmsc335_final_project.panels.ControlPanel;
-import cmsc335_final_project.panels.TimePanel;
-import cmsc335_final_project.panels.TrafficLightPanel;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import cmsc335_final_project.panels.impls.CarPanel;
+import cmsc335_final_project.panels.impls.ControlPanel;
+import cmsc335_final_project.panels.impls.TimePanel;
+import cmsc335_final_project.panels.impls.TrafficLightPanel;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -17,6 +21,8 @@ public class App extends Application {
     private static TrafficLightPanel trafficLightPanel;
     private static CarPanel carPanel;
     private static ControlPanel controlPanel;
+
+    private ExecutorService executorService;
 
     public static void main(String[] args) {
         timePanel = new TimePanel();
@@ -32,10 +38,14 @@ public class App extends Application {
         BorderPane root = new BorderPane();
 
         // Initalize the time panel and add it to the top of the main layout
-        timePanel.initTimePanel(root);
-        trafficLightPanel.initTrafficLightPanel(root);
-        carPanel.initCarsPanel(root);
-        controlPanel.initControlPanel(root, carPanel, trafficLightPanel);
+        timePanel.initPanel(root);
+
+        VBox centerBox = new VBox(20);
+        trafficLightPanel.initPanel(centerBox, executorService);
+        carPanel.initPanel(centerBox, executorService);
+        root.setCenter(centerBox);
+
+        controlPanel.initPanel(root, carPanel, trafficLightPanel);
 
         // Set the scene with the main layout pane and default dimensions (e.g.,
         // 800x600)
@@ -49,9 +59,19 @@ public class App extends Application {
         primaryStage.show();
 
         // Start the time update
-        timePanel.startTimeUpdate();
-        trafficLightPanel.startTrafficLightCycle();
-        carPanel.startCarMovementUpdate();
+        timePanel.startUpdate();
+        trafficLightPanel.startUpdate();
+        carPanel.startUpdate();
+    }
+
+    @Override
+    public void init() {
+        executorService = Executors.newFixedThreadPool(2);
+    }
+
+    @Override
+    public void stop() {
+        executorService.shutdownNow();
     }
 
 }

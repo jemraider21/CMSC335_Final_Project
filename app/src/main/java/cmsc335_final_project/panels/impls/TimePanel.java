@@ -1,20 +1,22 @@
-package cmsc335_final_project.panels;
+package cmsc335_final_project.panels.impls;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import cmsc335_final_project.panels.IPanel;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Duration;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class TimePanel {
+public class TimePanel implements IPanel {
     private Label timeLabel; // To display the current time
 
-    public void initTimePanel(BorderPane root) {
+    public void initPanel(BorderPane root) {
         // Create the label to show time
         timeLabel = new Label();
         updateTimeLabel();
@@ -29,7 +31,7 @@ public class TimePanel {
         timeLabel.setText(sdf.format(new Date()));
     }
 
-    public void startTimeUpdate() {
+    public void startUpdate() {
         // Create a timeline to update the time label every second
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> updateTimeLabel()));
         timeline.setCycleCount(Timeline.INDEFINITE);

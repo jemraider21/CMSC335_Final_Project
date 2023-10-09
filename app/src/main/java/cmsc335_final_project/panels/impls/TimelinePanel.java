@@ -1,4 +1,7 @@
-package cmsc335_final_project.panels;
+package cmsc335_final_project.panels.impls;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 import javafx.animation.Timeline;
 import lombok.Getter;
@@ -9,33 +12,40 @@ import lombok.Setter;
 @Setter
 @Getter
 public abstract class TimelinePanel {
-    protected Timeline timeline;
+    // protected Timeline timeline;
     protected TimelineAction currentTimelineState;
+    protected ExecutorService executorService;
+    protected Future<?> future;
 
     public void setTimelineState(TimelineAction action) {
         switch (action) {
             case ACTIVE:
-                timeline.play();
+                future.cancel(false);
                 break;
             case PAUSE:
-                timeline.pause();
+                break;
             case STOP:
             default:
-                timeline.stop();
+                future.cancel(true);
         }
         currentTimelineState = action;
     }
 
-    public boolean isTimelineNotNull() {
-        return timeline != null;
-    }
+    // public boolean isTimelineNotNull() {
+    // return timeline != null;
+    // }
 
     public boolean isActive() {
         return currentTimelineState.equals(TimelineAction.ACTIVE);
     }
 
     public boolean isNotActive() {
-        return currentTimelineState.equals(TimelineAction.PAUSE) || currentTimelineState.equals(TimelineAction.STOP);
+        return currentTimelineState.equals(TimelineAction.PAUSE) ||
+                currentTimelineState.equals(TimelineAction.STOP);
+    }
+
+    public boolean isFutureNotNull() {
+        return future != null;
     }
 
     public enum TimelineAction {
