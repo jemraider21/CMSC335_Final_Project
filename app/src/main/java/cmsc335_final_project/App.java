@@ -3,28 +3,48 @@
  */
 package cmsc335_final_project;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import cmsc335_final_project.panels.TimePanel;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class App extends Application {
+    private static TimePanel timePanel;
+
     public static void main(String[] args) {
+        timePanel = new TimePanel();
         launch(args);
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
-        // Create a new label
-        Label label = new Label("Hello, World!");
+    public void start(Stage primaryStage) throws Exception {
+        // Create the main layout pane
+        BorderPane root = new BorderPane();
 
-        // Create a new scene
-        Scene scene = new Scene(label);
+        // Initalize the time panel and add it to the top of the main layout
+        timePanel.initTimePanel(root);
 
-        // Set the scene of the stage
-        stage.setScene(scene);
+        // Set the scene with the main layout pane and default dimensions (e.g.,
+        // 800x600)
+        Scene scene = new Scene(root, 800, 600);
 
-        // Show the stage
-        stage.show();
+        // Set the stage properties
+        primaryStage.setTitle("Traffic Congestion Mitigation Simulation");
+        primaryStage.setScene(scene);
+
+        // Show the primary stage/window
+        primaryStage.show();
+
+        // Start the time update
+        timePanel.startTimeUpdate();
     }
+
 }
