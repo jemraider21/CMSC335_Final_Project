@@ -3,7 +3,6 @@ package cmsc335_final_project.panels;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -12,7 +11,7 @@ import javafx.util.Duration;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class TrafficLightPanel {
+public class TrafficLightPanel extends TimelinePanel {
     private Circle redLight, yellowLight, greenLight; // Traffic light circles
 
     public void initTrafficLightPanel(BorderPane root) {
@@ -30,14 +29,19 @@ public class TrafficLightPanel {
     }
 
     public void startTrafficLightCycle() {
-        Timeline timeline = new Timeline(
+        setTimeline(createNewTimeline());
+
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+        currentTimelineState = TimelineAction.ACTIVE;
+    }
+
+    public Timeline createNewTimeline() {
+        return new Timeline(
                 new KeyFrame(Duration.seconds(0), event -> turnOnRedLight()),
                 new KeyFrame(Duration.seconds(10), event -> turnOnYellowLight()),
                 new KeyFrame(Duration.seconds(12), event -> turnOnGreenLight()),
                 new KeyFrame(Duration.seconds(20), event -> turnOnRedLight()));
-
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
     }
 
     public void turnOffAllLights() {

@@ -4,6 +4,7 @@
 package cmsc335_final_project;
 
 import cmsc335_final_project.panels.CarPanel;
+import cmsc335_final_project.panels.ControlPanel;
 import cmsc335_final_project.panels.TimePanel;
 import cmsc335_final_project.panels.TrafficLightPanel;
 import javafx.application.Application;
@@ -15,11 +16,13 @@ public class App extends Application {
     private static TimePanel timePanel;
     private static TrafficLightPanel trafficLightPanel;
     private static CarPanel carPanel;
+    private static ControlPanel controlPanel;
 
     public static void main(String[] args) {
         timePanel = new TimePanel();
         trafficLightPanel = new TrafficLightPanel();
         carPanel = new CarPanel();
+        controlPanel = new ControlPanel();
         launch(args);
     }
 
@@ -32,6 +35,7 @@ public class App extends Application {
         timePanel.initTimePanel(root);
         trafficLightPanel.initTrafficLightPanel(root);
         carPanel.initCarsPanel(root);
+        controlPanel.initControlPanel(root, carPanel, trafficLightPanel);
 
         // Set the scene with the main layout pane and default dimensions (e.g.,
         // 800x600)

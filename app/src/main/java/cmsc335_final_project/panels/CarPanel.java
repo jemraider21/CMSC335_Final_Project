@@ -7,12 +7,12 @@ import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class CarPanel {
+public class CarPanel extends TimelinePanel {
     private HBox panel;
-    private Timeline carMovementTimeline;
 
     public void initCarsPanel(BorderPane root) {
         panel = new HBox(50);
@@ -30,7 +30,14 @@ public class CarPanel {
     }
 
     public void startCarMovementUpdate() {
-        carMovementTimeline = new Timeline(
+        setTimeline(createNewTimeline());
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+        currentTimelineState = TimelineAction.ACTIVE;
+    }
+
+    public Timeline createNewTimeline() {
+        return new Timeline(
                 new KeyFrame(Duration.seconds(1), event -> {
                     // Every second, update the position of each car based on its speed
                     for (Node carNode : panel.getChildren()) {
@@ -38,7 +45,5 @@ public class CarPanel {
                         car.updatePosition(2); // updating for 1 second
                     }
                 }));
-        carMovementTimeline.setCycleCount(Timeline.INDEFINITE);
-        carMovementTimeline.play();
     }
 }
