@@ -6,7 +6,7 @@ import java.util.Date;
 import cmsc335_final_project.panels.IPanel;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.Node;
+import static javafx.animation.Timeline.INDEFINITE;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Duration;
@@ -34,7 +34,7 @@ public class TimePanel implements IPanel {
     public void startUpdate() {
         // Create a timeline to update the time label every second
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> updateTimeLabel()));
-        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.setCycleCount(INDEFINITE);
         timeline.play();
     }
 }

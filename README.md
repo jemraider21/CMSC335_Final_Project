@@ -1,11 +1,5 @@
 # CMSC335_Final_Project
 
-## Github Repo
-https://github.com/jemraider21/CMSC335_Final_Project
-
-## Google Bard Chat
-https://bard.google.com/chat/d72ffa120040a88d
-
 ## Requirements
 - java jdk 17
 - gradle

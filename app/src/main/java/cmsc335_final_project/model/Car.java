@@ -8,7 +8,8 @@ import lombok.Getter;
 
 public class Car extends VBox {
     private Rectangle rectangle;
-    private Label speedLable, positionLabel;
+    private Label speedLabel;
+    private Label positionLabel;
 
     @Getter
     private double speed; // in m/s
@@ -19,15 +20,15 @@ public class Car extends VBox {
     public Car() {
         rectangle = new Rectangle(30, 15, Color.BLUE); // Simple car representation
 
-        speedLable = new Label("Speed: 0");
+        speedLabel = new Label("Speed: 0");
         positionLabel = new Label("Position: 0");
 
-        this.getChildren().addAll(rectangle, speedLable, positionLabel);
+        this.getChildren().addAll(rectangle, speedLabel, positionLabel);
     }
 
     public void setSpeed(double speed) {
         this.speed = speed;
-        speedLable.setText(String.format("Speed: %s m/s", String.valueOf(speed)));
+        speedLabel.setText(String.format("Speed: %s m/s", String.valueOf(speed)));
     }
 
     public void setPosition(double position) {
@@ -38,5 +39,10 @@ public class Car extends VBox {
     public void updatePosition(double timeInSeconds) {
         this.position += this.speed * timeInSeconds;
         positionLabel.setText(String.format("Position: %s m", String.valueOf(position)));
+    }
+
+    public void stop() {
+        setSpeed(0);
+        setPosition(0);
     }
 }

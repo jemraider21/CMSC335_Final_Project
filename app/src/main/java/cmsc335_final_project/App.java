@@ -37,11 +37,12 @@ public class App extends Application {
         // Create the main layout pane
         BorderPane root = new BorderPane();
 
-        // Initalize the time panel and add it to the top of the main layout
+        // Initialize the time panel and add it to the top of the main layout
         timePanel.initPanel(root);
 
         VBox centerBox = new VBox(20);
         trafficLightPanel.initPanel(centerBox, executorService);
+        carPanel.setTrafficLightPanel(trafficLightPanel);
         carPanel.initPanel(centerBox, executorService);
         root.setCenter(centerBox);
 

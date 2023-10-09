@@ -3,7 +3,7 @@ package cmsc335_final_project.panels.impls;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-import javafx.animation.Timeline;
+import cmsc335_final_project.enums.FutureAction;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,13 +11,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public abstract class TimelinePanel {
-    // protected Timeline timeline;
-    protected TimelineAction currentTimelineState;
+public abstract class FuturePanel {
+    protected FutureAction currentTimelineState;
     protected ExecutorService executorService;
     protected Future<?> future;
 
-    public void setTimelineState(TimelineAction action) {
+    public void setTimelineState(FutureAction action) {
         switch (action) {
             case ACTIVE:
                 future.cancel(false);
@@ -31,24 +30,16 @@ public abstract class TimelinePanel {
         currentTimelineState = action;
     }
 
-    // public boolean isTimelineNotNull() {
-    // return timeline != null;
-    // }
-
     public boolean isActive() {
-        return currentTimelineState.equals(TimelineAction.ACTIVE);
+        return currentTimelineState.equals(FutureAction.ACTIVE);
     }
 
     public boolean isNotActive() {
-        return currentTimelineState.equals(TimelineAction.PAUSE) ||
-                currentTimelineState.equals(TimelineAction.STOP);
+        return currentTimelineState.equals(FutureAction.PAUSE) ||
+                currentTimelineState.equals(FutureAction.STOP);
     }
 
     public boolean isFutureNotNull() {
         return future != null;
-    }
-
-    public enum TimelineAction {
-        ACTIVE, PAUSE, STOP
     }
 }

@@ -1,23 +1,18 @@
 package cmsc335_final_project.panels.impls;
 
-import cmsc335_final_project.panels.IPanel;
+import cmsc335_final_project.enums.ControlPanelAction;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class ControlPanel implements IPanel {
+public class ControlPanel {
     private HBox panel;
-    private Button startButton, stopButton;
+    private Button startButton;
+    private Button stopButton;
     private TrafficLightPanel trafficLightPanel;
     private CarPanel carPanel;
-
-    @Override
-    public void initPanel(BorderPane root) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'initPanel'");
-    }
 
     public void initPanel(BorderPane root, CarPanel carPanel, TrafficLightPanel trafficLightPanel) {
         this.carPanel = carPanel;
@@ -25,14 +20,14 @@ public class ControlPanel implements IPanel {
 
         panel = new HBox(10);
 
-        startButton = createButton("Start", false, Action.START);
-        stopButton = createButton("Stop", false, Action.STOP);
+        startButton = createButton("Start", false, ControlPanelAction.START);
+        stopButton = createButton("Stop", false, ControlPanelAction.STOP);
         panel.getChildren().addAll(startButton, stopButton);
 
         root.setBottom(panel);
     }
 
-    private Button createButton(String buttonName, boolean isDisabled, Action action) {
+    private Button createButton(String buttonName, boolean isDisabled, ControlPanelAction action) {
         Button button = new Button(buttonName);
         button.setDisable(isDisabled);
         switch (action) {
@@ -57,7 +52,6 @@ public class ControlPanel implements IPanel {
             trafficLightPanel.startUpdate();
         }
 
-        // Set appropriate button states, e.g., enable pause and stop
         startButton.setDisable(true);
         stopButton.setDisable(false);
     }
@@ -72,21 +66,7 @@ public class ControlPanel implements IPanel {
             trafficLightPanel.stopUpdate();
         }
 
-        // Set appropriate button states, e.g., enable start
         startButton.setDisable(false);
         stopButton.setDisable(true);
-    }
-
-    private enum Action {
-        START,
-        PAUSE,
-        CONTINUE,
-        STOP
-    }
-
-    @Override
-    public void startUpdate() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'startUpdate'");
     }
 }

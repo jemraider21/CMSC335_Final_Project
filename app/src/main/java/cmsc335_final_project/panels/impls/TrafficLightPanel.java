@@ -2,27 +2,29 @@ package cmsc335_final_project.panels.impls;
 
 import java.util.concurrent.ExecutorService;
 
+import cmsc335_final_project.enums.FutureAction;
+import cmsc335_final_project.enums.TrafficLightStatus;
 import cmsc335_final_project.panels.IThreadPanel;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class TrafficLightPanel extends TimelinePanel implements IThreadPanel {
-    private Circle redLight, yellowLight, greenLight; // Traffic light circles
+public class TrafficLightPanel extends FuturePanel implements IThreadPanel {
+    private Circle redLight;
+    private Circle yellowLight;
+    private Circle greenLight; // Traffic light circles
 
-    @Override
-    public void initPanel(BorderPane root) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'initPanel'");
-    }
+    @Getter
+    private TrafficLightStatus trafficLightStatus;
 
     public void initPanel(VBox centerBox, ExecutorService executorService) {
         this.executorService = executorService;
+
         // Initialize the traffic light circles with default 'off' color
         redLight = new Circle(20, Color.GRAY);
         yellowLight = new Circle(20, Color.GRAY);
@@ -38,31 +40,32 @@ public class TrafficLightPanel extends TimelinePanel implements IThreadPanel {
 
     public void startUpdate() {
         createNewFuture();
-        setCurrentTimelineState(TimelineAction.ACTIVE);
+        setCurrentTimelineState(FutureAction.ACTIVE);
     }
 
     @Override
     public void stopUpdate() {
         future.cancel(true);
-        setCurrentTimelineState(TimelineAction.STOP);
+        setCurrentTimelineState(FutureAction.STOP);
     }
 
     public void createNewFuture() {
+        this.trafficLightStatus = TrafficLightStatus.RED;
         future = executorService.submit(() -> {
             try {
                 while (!Thread.currentThread().isInterrupted()) {
 
-                    // Red Light Logic
-                    Platform.runLater(() -> turnOnRedLight());
-                    Thread.sleep(10000); // 10 seconds for red light
+                    // Green Light Logic
+                    Platform.runLater(() -> turnOnLight(greenLight, TrafficLightStatus.GREEN));
+                    Thread.sleep(10000); // 10 seconds for green light
 
                     // Yellow Light Logic
-                    Platform.runLater(() -> turnOnYellowLight());
+                    Platform.runLater(() -> turnOnLight(yellowLight, TrafficLightStatus.YELLOW));
                     Thread.sleep(2000); // 2 seconds for yellow light
 
-                    // Green Light Logic
-                    Platform.runLater(() -> turnOnGreenLight());
-                    Thread.sleep(8000); // 8 seconds for green light
+                    // Red Light Logic
+                    Platform.runLater(() -> turnOnLight(redLight, TrafficLightStatus.RED));
+                    Thread.sleep(8000); // 8 seconds for red light
 
                 }
             } catch (InterruptedException e) {
@@ -70,7 +73,7 @@ public class TrafficLightPanel extends TimelinePanel implements IThreadPanel {
                 System.out.println("Traffic Light thread has been slept");
             }
         });
-        currentTimelineState = TimelineAction.PAUSE;
+        currentTimelineState = FutureAction.PAUSE;
     }
 
     public void turnOffAllLights() {
@@ -79,19 +82,10 @@ public class TrafficLightPanel extends TimelinePanel implements IThreadPanel {
         greenLight.setFill(Color.GRAY);
     }
 
-    public void turnOnRedLight() {
+    public void turnOnLight(Circle circleToChange, TrafficLightStatus trafficLightStatus) {
         turnOffAllLights();
-        redLight.setFill(Color.RED);
-    }
-
-    public void turnOnYellowLight() {
-        turnOffAllLights();
-        yellowLight.setFill(Color.YELLOW);
-    }
-
-    public void turnOnGreenLight() {
-        turnOffAllLights();
-        greenLight.setFill(Color.GREEN);
+        this.trafficLightStatus = trafficLightStatus;
+        circleToChange.setFill(trafficLightStatus.getColor());
     }
 
 }
