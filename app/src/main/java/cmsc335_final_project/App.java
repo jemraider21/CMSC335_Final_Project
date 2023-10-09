@@ -3,6 +3,7 @@
  */
 package cmsc335_final_project;
 
+import cmsc335_final_project.panels.CarPanel;
 import cmsc335_final_project.panels.TimePanel;
 import cmsc335_final_project.panels.TrafficLightPanel;
 import javafx.application.Application;
@@ -13,10 +14,12 @@ import javafx.stage.Stage;
 public class App extends Application {
     private static TimePanel timePanel;
     private static TrafficLightPanel trafficLightPanel;
+    private static CarPanel carPanel;
 
     public static void main(String[] args) {
         timePanel = new TimePanel();
         trafficLightPanel = new TrafficLightPanel();
+        carPanel = new CarPanel();
         launch(args);
     }
 
@@ -28,6 +31,7 @@ public class App extends Application {
         // Initalize the time panel and add it to the top of the main layout
         timePanel.initTimePanel(root);
         trafficLightPanel.initTrafficLightPanel(root);
+        carPanel.initCarsPanel(root);
 
         // Set the scene with the main layout pane and default dimensions (e.g.,
         // 800x600)
@@ -43,6 +47,7 @@ public class App extends Application {
         // Start the time update
         timePanel.startTimeUpdate();
         trafficLightPanel.startTrafficLightCycle();
+        carPanel.startCarMovementUpdate();
     }
 
 }
