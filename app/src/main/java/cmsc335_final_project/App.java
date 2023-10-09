@@ -3,24 +3,20 @@
  */
 package cmsc335_final_project;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import cmsc335_final_project.panels.TimePanel;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import cmsc335_final_project.panels.TrafficLightPanel;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class App extends Application {
     private static TimePanel timePanel;
+    private static TrafficLightPanel trafficLightPanel;
 
     public static void main(String[] args) {
         timePanel = new TimePanel();
+        trafficLightPanel = new TrafficLightPanel();
         launch(args);
     }
 
@@ -31,6 +27,7 @@ public class App extends Application {
 
         // Initalize the time panel and add it to the top of the main layout
         timePanel.initTimePanel(root);
+        trafficLightPanel.initTrafficLightPanel(root);
 
         // Set the scene with the main layout pane and default dimensions (e.g.,
         // 800x600)
@@ -45,6 +42,7 @@ public class App extends Application {
 
         // Start the time update
         timePanel.startTimeUpdate();
+        trafficLightPanel.startTrafficLightCycle();
     }
 
 }
